@@ -1,0 +1,5 @@
+#dont' track content of these followed
+data/
+Food-11/
+venv/
+__pycache__/
