@@ -102,7 +102,7 @@ class Dataset(data.Dataset):
         elif(self.type == 'val'):
             X = io.imread('./Food-11/validation/' + ID + '.jpg')
         elif(self.type == 'test'):
-            X = io.imread('./Food-11/evalutation/' + ID + '.jpg')
+            X = io.imread('./Food-11/evaluation/' + ID + '.jpg')
         y = self.labels[ID]
         sample = {'image': X, 'label': y}
         if self.transform:

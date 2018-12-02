@@ -52,10 +52,10 @@ get_ids_labels("Food-11/evaluation", test_ids, test_labels)
 training_set = Dataset(train_ids, train_labels, 'train', transform=transforms.Compose([Rescale((512,512)),ToTensor()]))
 training_generator = data.DataLoader(dataset=training_set,batch_size=batch_size,shuffle=True, num_workers=number_of_workers)
 
-validation_set = Dataset(val_ids, val_labels, 'val',transform=transforms.Compose([Rescale(512,512),ToTensor()]))
+validation_set = Dataset(val_ids, val_labels, 'val',transform=transforms.Compose([Rescale((512,512)),ToTensor()]))
 validation_generator = data.DataLoader(dataset=validation_set,batch_size=batch_size,shuffle=True, num_workers=number_of_workers)
 
-test_set = Dataset(test_ids, test_labels, 'test', transform=transforms.Compose([Rescale(512.512),ToTensor()]))
+test_set = Dataset(test_ids, test_labels, 'test',transform=transforms.Compose([Rescale((512,512)),ToTensor()]))
 test_generator = data.DataLoader(dataset=test_set,batch_size=batch_size,shuffle=True,num_workers=number_of_workers)
 
 
@@ -67,6 +67,8 @@ criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 total_step = len(training_generator)
 
+for local_batchs, local_labels in test_generator:
+    print('test {}'.format(len(local_batchs)))
 
 
 
