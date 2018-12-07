@@ -22,8 +22,6 @@ device = torch.device("cuda:0" if use_cuda else "cpu")
 
 max_epochs = 100
 
-
-
 training_set, training_generator = get_loader() # default is used for training
 validation_set, validation_generator = get_loader(inside="validation", target_type='val')
 test_set, test_generator = get_loader(inside="evaluation", target_type='test')
