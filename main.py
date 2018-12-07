@@ -1,12 +1,12 @@
-from data_loading import Dataset, Rescale, ToTensor, RandomCrop
+from commons.data_loading import Dataset, Rescale, ToTensor
 import torch
 from torch.utils import data
-import glob,os
-import vgg
+import glob, os
+from model.vgg import *
 import torch.nn as nn
-from torchvision import transforms, utils
+from torchvision import transforms
+from commons.cv_input import *
 
-import matplotlib.pyplot as plt
 # Hyper-parameters
 input_size = 512*512
 hidden_size = 500
@@ -19,56 +19,27 @@ learning_rate = 0.001
 # CUDA for PyTorch
 use_cuda = torch.cuda.is_available()
 device = torch.device("cuda:0" if use_cuda else "cpu")
-# cudnn.benchmark = True
 
-# Parameters
 
 max_epochs = 100
-def get_ids_labels(dir, ids_list, lab_dict):
-    os.chdir(dir)
-    for file in glob.glob("*.jpg"):
-        name = file[:-4]
-        lab_dict[name] = int(file[0])
-        ids_list.append(name)
-    #back to root folder
-    os.chdir("..")
-    os.chdir("..")
-
-train_ids = []
-val_ids = []
-test_ids = []
-train_labels = {}
-val_labels = {}
-test_labels = {}
-
-#read_filenames
-# print(os.getcwd())
-get_ids_labels("Food-11/training", train_ids, train_labels)
-get_ids_labels("Food-11/validation", val_ids, val_labels)
-get_ids_labels("Food-11/evaluation", test_ids, test_labels)
-
-# Generators
-
-training_set = Dataset(train_ids, train_labels, 'train', transform=transforms.Compose([Rescale((512,512)),ToTensor()]))
-training_generator = data.DataLoader(dataset=training_set,batch_size=batch_size,shuffle=True, num_workers=number_of_workers)
-
-validation_set = Dataset(val_ids, val_labels, 'val',transform=transforms.Compose([Rescale((512,512)),ToTensor()]))
-validation_generator = data.DataLoader(dataset=validation_set,batch_size=batch_size,shuffle=True, num_workers=number_of_workers)
-
-test_set = Dataset(test_ids, test_labels, 'test',transform=transforms.Compose([Rescale((512,512)),ToTensor()]))
-test_generator = data.DataLoader(dataset=test_set,batch_size=batch_size,shuffle=True,num_workers=number_of_workers)
 
 
-model = vgg.create_vgg16()
+
+training_set, training_generator = get_loader() # default is used for training
+validation_set, validation_generator = get_loader(inside="validation", target_type='val')
+test_set, test_generator = get_loader(inside="evaluation", target_type='test')
+
+model = set_vgg16(num_classes=10)
 # torch.nn.DataParallel(model.features)
-
+model.to(device)
 # Loss and optimizer
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 total_step = len(training_generator)
 
-for local_batchs, local_labels in test_generator:
-    print('test {}'.format(len(local_batchs)))
+for images, labels in test_generator:
+    print(labels)
+    print(str(len(labels)))
 
 
 
