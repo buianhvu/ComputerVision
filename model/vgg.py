@@ -5,7 +5,7 @@ D = [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 'M', 512, 512, 512, 'M', 512, 51
 
 
 class VGG(nn.Module):
-    def __init__(self, layers, num_classes=10, init_weight=True, default_last_size=7):
+    def __init__(self, layers, num_classes=10, init_weight=True):
         super(VGG, self).__init__()
         self.layers = layers
         self.classifier = nn.Sequential(
