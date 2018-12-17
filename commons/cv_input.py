@@ -11,7 +11,7 @@ DEFAULT_TRANSFORM = transforms.Compose([transforms.Resize((224, 224)), transform
 DEFAULT_WORKERS = 4
 
 
-def get_ids_labels(ids_list: list, lab_dict: dict, path="Food-11/training"):
+def get_ids_labels(ids_list: list, lab_dict: dict, path="/content/drive/My Drive/Food-11"):
     all_pictures = os.path.join(path, "*.jpg")
     for file in glob.glob(all_pictures):
         file_name = os.path.basename(file)
@@ -22,7 +22,7 @@ def get_ids_labels(ids_list: list, lab_dict: dict, path="Food-11/training"):
     return ids_list, lab_dict
 
 
-def get_loader(root="Food-11", inside="training", target_type='train', batch_size=DEFAULT_BATCH_SIZE,
+def get_loader(root="/content/drive/My Drive/Food-11", inside="training", target_type='train', batch_size=DEFAULT_BATCH_SIZE,
                input_transform=DEFAULT_TRANSFORM, number_of_workers=DEFAULT_WORKERS,
                shuffle=True):
     target_folder = os.path.join(root, inside)
