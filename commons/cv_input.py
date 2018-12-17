@@ -7,7 +7,7 @@ import glob
 from torchvision import transforms
 
 DEFAULT_BATCH_SIZE = 40
-DEFAULT_TRANSFORM = transforms.Compose([transforms.Resize((512, 512)), transforms.ToTensor()])
+DEFAULT_TRANSFORM = transforms.Compose([transforms.Resize((224, 224)), transforms.ToTensor()])
 DEFAULT_WORKERS = 4
 
 
