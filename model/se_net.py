@@ -77,7 +77,7 @@ class SENet(nn.Module):
         return nn.Sequential(*layers)
 
 
-def se_default(in_planes=3):
+def se_default(in_planes=3, num_classes=10):
     layers = [(3, 64, 2), (3, 128, 2), (3, 256, 4), (3, 512, 4), [3, 512, 4]]
     return SENet(layers, in_planes)
 

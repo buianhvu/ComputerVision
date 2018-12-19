@@ -22,7 +22,7 @@ OPT = {
 def train_model(model: nn.Module, train_loader: torch.utils.data.DataLoader,
                 model_name=default_name, path_state=PATH_STATE,  path_log=PATH_LOG,
                 learning_rate=default_learning_rate, momentum=default_momentum, optimize_func = optim.SGD,
-                epoch_num=2, device=None, default_check=100,):
+                epoch_num=2, device=None, default_check=100):
     """
     :param model: nn.Module
     :param train_loader: train data set in DataLoader
@@ -79,8 +79,8 @@ def train_model(model: nn.Module, train_loader: torch.utils.data.DataLoader,
             running_loss += loss_item
             running_check += loss_item
 
-            print("[%d, %d]: loss: %f - time %f" % (epoch, i, float(running_loss / (i + 1)), end_time))
-            f.write("[%d, %d]: loss: %f\n" % (epoch, i, float(running_loss / (i + 1))))
+            print("[%d, %d]: loss: %f - average loss: %f - time %f" % (epoch, i, float(loss_item) ,float(running_loss / (i + 1)), end_time))
+            f.write("[%d, %d]: loss: %f - average loss : %f\n" % (epoch, i, float(loss_item) ,float(running_loss / (i + 1))))
             if i % default_check == default_check-1:
                 print("[%d, %5d]: loss: %.3f"%(epoch, i+1, running_check/default_check))
                 f1.write("[%d, %5d]: loss: %.3f\n"%(epoch, i+1, running_check/default_check))
