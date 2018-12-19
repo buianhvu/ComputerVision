@@ -17,11 +17,12 @@ def test_data(model: nn.Module, test_loader: DataLoader, classes, device=None, b
     with torch.no_grad():
         for data in test_loader:
             images, labels = data
+            n = len(images)
             images, labels = images.to(device), labels.to(device)
             output = model(images)
             _, predicted = torch.max(output, 1)
             c = (predicted == labels).squeeze()
-            for i in range(batch_size):
+            for i in range(n):
                 label = labels[i]
                 class_correct[label] += c[i].item()
                 class_total[label] += 1

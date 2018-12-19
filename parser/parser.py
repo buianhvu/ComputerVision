@@ -11,5 +11,7 @@ def parse_arguments():
     parser.add_argument('--momen', default=0.9, type=float)
     parser.add_argument('--model-name', default='se_net', type=str)
     parser.add_argument('--init', default=True, type=bool)
+    parser.add_argument('--nclass', default=11, type=int)
+    parser.add_argument('--plog', default='output/defaul_net')
     return parser.parse_args()
 
