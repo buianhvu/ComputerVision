@@ -5,7 +5,7 @@ import torch
 from test import test_log
 
 
-def test_data(model: nn.Module, test_loader: DataLoader, classes, device=None, batch_size=40, write_log=True):
+def test_data(model: nn.Module, test_loader: DataLoader, classes, device=None, write_log=True):
     num_classes = len(classes)
     if device is None:
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -37,7 +37,7 @@ def test_data(model: nn.Module, test_loader: DataLoader, classes, device=None, b
         test_log.write_log(classes, class_correct, class_total, accuracy)
 
 
-def test_unknown(model: nn.Module, test_loader: DataLoader, device=None, batch_size=40, write_log=True):
+def test_unknown(model: nn.Module, test_loader: DataLoader, device=None, write_log=True):
     if device is None:
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model.to(device)
@@ -48,11 +48,12 @@ def test_unknown(model: nn.Module, test_loader: DataLoader, device=None, batch_s
     with torch.no_grad():
         for data in test_loader:
             images, labels = data
+            n = len(images)
             images, labels = images.to(device), labels.to(device)
             output = model(images)
             _, predicted = torch.max(output, 1)
             c = (predicted == labels).squeeze()
-            for i in range(batch_size):
+            for i in range(n):
                 label = int(labels[i])
                 if label not in class_correct:
                     class_correct[label] = 0.
