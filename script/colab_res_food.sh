@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-STATE_DIR=/content/drive/My_Drive/output/
-STATE_LOG=/content/drive/My_Drive/output/
+STATE_DIR=/content/drive/My\ Drive/output/
+STATE_LOG=/content/drive/My\ Drive/output/
 DATA=/content/drive/Food-11/
 
 if [ ! -d "$STATE_DIR" ]; then
