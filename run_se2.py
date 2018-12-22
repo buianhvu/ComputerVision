@@ -9,8 +9,10 @@ if __name__ == '__main__':
     _, train_loader = get_loader()
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
+#     net = train_model(net, train_loader, model_name="se_food", optimize_func=OPT["adam"],
+#                       momentum=None)
     net = train_model(net, train_loader, model_name="se_food", optimize_func=OPT["adam"],
-                      momentum=None)
+momentum=None, path_state="/content/drive/My Drive/output/")
 
     _, test_loader = get_loader(inside="evaluation")
     classes = tuple(range(11))
