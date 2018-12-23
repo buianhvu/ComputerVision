@@ -119,7 +119,9 @@ def load_eval_model(model: nn.Module, model_name="model", path=PATH_STATE, devic
 def load_training_model(model: nn.Module, optimizer: optim.Optimizer, model_name="model", path_state=PATH_STATE, device=None):
     if device is None:
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    checkpoint = torch.load(path_state)
+    state_file = model_name + STATE_EXT
+    state_file = os.path.join(path_state, state_file)
+    checkpoint = torch.load(state_file)
     model.load_state_dict(checkpoint[DEFAULT_STATE_DICT_MODEL])
     optimizer.load_state_dict(checkpoint[DEFAULT_STATE_DICT_OPT])
     epoch = checkpoint['epoch']
