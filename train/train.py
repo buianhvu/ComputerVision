@@ -274,9 +274,9 @@ def clear_path(model_name: str, path_state: str=PATH_STATE, path_log: str=PATH_L
 
 
 def train_model_ac_load_save(model: nn.Module, train_loader: torch.utils.data.DataLoader,
-                model_name=default_name, path_state=PATH_STATE,  path_log=PATH_LOG,
-                learning_rate=default_learning_rate, momentum=default_momentum, optimize_func = optim.SGD,
-                epoch_num=2, device=None, default_check=100):
+                             model_name=default_name, path_state=PATH_STATE,  path_log=PATH_LOG,
+                             learning_rate=default_learning_rate, momentum=default_momentum, optimize_func = optim.SGD,
+                             epoch_num=2, device=None, default_check=100):
     """
     :param model: nn.Module
     :param train_loader: train data set in DataLoader
@@ -331,6 +331,7 @@ def train_model_ac_load_save(model: nn.Module, train_loader: torch.utils.data.Da
             epoch += 1
             if epoch >= epoch_num:
                 break
+
         running_loss = 0.0
         running_check = 0.0
         for i, data in enumerate(train_loader):
