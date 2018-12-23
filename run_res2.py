@@ -11,7 +11,7 @@ if __name__ == '__main__':
 
     net = train_model_ac_load_save(net, train_loader, model_name="se_food", optimize_func=OPT["adam"],
                                    momentum=None, path_state="/content/drive/My Drive/output",
-                                   path_log="content/drive/My Drive/output", epoch_num=10)
+                                   path_log="/content/drive/My Drive/output", epoch_num=10)
 
     _, test_loader = get_loader(root="/content/drive/My Drive/Food-11",inside="evaluation")
     classes = tuple(range(11))
