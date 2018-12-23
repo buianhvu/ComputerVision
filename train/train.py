@@ -358,7 +358,7 @@ def train_model_ac_load_save(model: nn.Module, train_loader: torch.utils.data.Da
 
         # save to file
         torch.save({
-            EPOCH_STR: epoch_num,
+            EPOCH_STR: epoch,
             DEFAULT_STATE_DICT_MODEL: model.state_dict(),
             DEFAULT_STATE_DICT_OPT: optimizer.state_dict(),
         }, save_states)
