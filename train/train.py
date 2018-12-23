@@ -327,8 +327,8 @@ def train_model_ac_load_save(model: nn.Module, train_loader: torch.utils.data.Da
     while epoch < epoch_num:
         if model_exist(model_name, path_state):
             model, optimizer, epoch, loss = load_training_model(model, optimizer,
-                                                                model_name=model_name, device=device
-                                                                path_state=path_state, path_log=path_log)
+                                                                model_name=model_name, device=device,
+                                                                path_state=path_state)
             epoch += 1
             if epoch >= epoch_num:
                 break
