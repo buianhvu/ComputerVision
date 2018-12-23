@@ -28,6 +28,7 @@ class SEBlock(nn.Module):
 
 class ResBottleSeBlock(nn.Module):
     expansion = 4
+
     def __init__(self, in_planes, planes, stride = 1, down_sample=None, r =4):
         super(ResBottleSeBlock, self).__init__()
         self.conv1 = conv1x1(in_planes, planes)
@@ -128,8 +129,6 @@ def se_default(in_planes=3):
 def res_se_101(num_classes=10):
     model = ResNet(ResBottleSeBlock, [3, 4, 23, 3], num_classes=num_classes)
     return model
-
-
 
 
 # from model.res_net import *
