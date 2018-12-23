@@ -125,10 +125,9 @@ def load_training_model(model: nn.Module, optimizer: optim.Optimizer, model_name
     model.load_state_dict(checkpoint[DEFAULT_STATE_DICT_MODEL])
     optimizer.load_state_dict(checkpoint[DEFAULT_STATE_DICT_OPT])
     epoch = checkpoint['epoch']
-    loss = checkpoint['loss']
     model.to(device)
     model.train()
-    return model, optimizer, epoch, loss
+    return model, optimizer, epoch
     pass
 
 
@@ -326,9 +325,9 @@ def train_model_ac_load_save(model: nn.Module, train_loader: torch.utils.data.Da
     epoch = 0
     while epoch < epoch_num:
         if model_exist(model_name, path_state):
-            model, optimizer, epoch, loss = load_training_model(model, optimizer,
-                                                                model_name=model_name, device=device,
-                                                                path_state=path_state)
+            model, optimizer, epoch = load_training_model(model, optimizer,
+                                                          model_name=model_name, device=device,
+                                                          path_state=path_state)
             epoch += 1
             if epoch >= epoch_num:
                 break
