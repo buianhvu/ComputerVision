@@ -9,7 +9,7 @@ if __name__ == '__main__':
     _, train_loader = get_loader(root="/content/drive/My Drive/Food-11", batch_size=10)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-    net = train_model_ac_load_save(net, train_loader, model_name="se_food", optimize_func=OPT["adam"],
+    net = train_model_ac_load_save(net, train_loader, model_name="res_food", optimize_func=OPT["adam"],
                                    momentum=None, path_state="/content/drive/My Drive/output",
                                    path_log="/content/drive/My Drive/output", epoch_num=10)
 
