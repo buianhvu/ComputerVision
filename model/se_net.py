@@ -127,7 +127,12 @@ def se_default(in_planes=3):
 
 
 def res_se_101(num_classes=10):
-    model = ResNet(ResBottleSeBlock, [3, 4, 23, 3], num_classes=num_classes)
+    model = ResNet(ResBottleSeBlock, [3, 2, 23, 3], num_classes=num_classes)
+    return model
+
+
+def res_se_50(num_classes=10):
+    model = ResNet(ResBottleSeBlock, [3, 2, 6, 3], num_classes=num_classes)
     return model
 
 

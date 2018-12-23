@@ -9,10 +9,10 @@ if __name__ == '__main__':
     num_classes = 11
     input_folder = "/content/drive/My Drive/Food-11"
     output_folder = "/content/drive/My Drive/output/" + model_name
-    batch_size = 30
+    batch_size = 35
     epoch_num = 50
 
-    net = res_se_101(num_classes=num_classes)
+    net = res_se_50(num_classes=num_classes)
 
     _, train_loader = get_loader(root=input_folder, batch_size=batch_size)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
