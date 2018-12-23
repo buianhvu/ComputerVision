@@ -5,7 +5,7 @@ import torch
 from test import test_log
 
 
-def test_data(model: nn.Module, test_loader: DataLoader, classes, device=None, write_log=True):
+def test_data(model: nn.Module, test_loader: DataLoader, classes, device=None, write_log=True, file_log="test.log"):
     num_classes = len(classes)
     if device is None:
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -34,7 +34,7 @@ def test_data(model: nn.Module, test_loader: DataLoader, classes, device=None, w
     accuracy = total_correct/total
     print('Accuracy: %2d %%' % (accuracy*100))
     if write_log:
-        test_log.write_log(classes, class_correct, class_total, accuracy)
+        test_log.write_log(classes, class_correct, class_total, accuracy, path=file_log)
 
 
 def test_unknown(model: nn.Module, test_loader: DataLoader, device=None, write_log=True):

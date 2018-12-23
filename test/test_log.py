@@ -2,8 +2,8 @@ import os
 
 PATH = os.path.dirname(os.path.abspath(__file__))
 PATH = os.path.join(PATH, "log")
-default_file1 = "default.log"
-default_file2 = "default_unknown.log"
+default_file1 = "test_result.log"
+default_file2 = "test_result_unknown.log"
 
 
 def write_log(classes, class_correct, class_total, accuracy: float,path=PATH, file_name=default_file1):

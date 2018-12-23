@@ -5,19 +5,22 @@ from commons.cv_input import *
 
 
 if __name__ == '__main__':
-    net = res_se_101(num_classes=11)
-    _, train_loader = get_loader(root="/content/drive/My Drive/Food-11")
+    model_name = "se_food"
+    num_classes = 11
+    input_folder = "/content/drive/My Drive/Food-11"
+    output_folder = "/content/drive/My Drive/output/" + model_name
+
+    net = res_se_101(num_classes=num_classes)
+
+    _, train_loader = get_loader(root=input_folder, batch_size=50)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
+    net = train_model_ac_load_save(net, train_loader, model_name=model_name, optimize_func=OPT["adam"],
+                                   momentum=None, path_state=output_folder,
+                                   path_log=output_folder, epoch_num=50)
 
-#     net = train_model(net, train_loader, model_name="se_food", optimize_func=OPT["adam"],
-#                       momentum=None)
-    net = train_model_ac_load_save(net, train_loader, model_name="se_food", optimize_func=OPT["adam"],
-                                   momentum=None, path_state="/content/drive/My Drive/output",
-                                   path_log="/content/drive/My Drive/output", epoch_num=10)
-
-    _, test_loader = get_loader(root="/content/drive/My Drive/Food-11", inside="evaluation")
-    classes = tuple(range(11))
-    test_data(model=net, test_loader=test_loader, classes=classes, device=device)
+    _, test_loader = get_loader(root=input_folder, inside="evaluation", batch_size=50)
+    classes = tuple(range(num_classes))
+    test_data(model=net, test_loader=test_loader, classes=classes, device=device, file_log=output_folder)
 
 
