@@ -12,7 +12,7 @@ if __name__ == '__main__':
     batch_size = 40
     epoch_num = 30
 
-    net = res_se_50(num_classes=num_classes)
+    net = res_se_101(num_classes=num_classes)
 
     _, train_loader = get_loader(root=input_folder, batch_size=batch_size)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
