@@ -21,7 +21,7 @@ def test_data(model: nn.Module, test_loader: DataLoader, classes, device=None, w
             n = len(images)
             images, labels = images.to(device), labels.to(device)
             output = model(images)
-            _, predicted = torch.max(output, 1)
+            _, predicted = torch.max(output.data, 1)
             c = (predicted == labels).squeeze()
             for i in range(n):
                 label = labels[i]

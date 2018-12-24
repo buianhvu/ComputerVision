@@ -149,7 +149,7 @@ def calculate_accuracy(model: nn.Module, data_loader: torch.utils.data.DataLoade
             images, labels = images.to(device), labels.to(device)
             n = len(images)
             output = model(images)
-            _, predicted = torch.max(output, 1)
+            _, predicted = torch.max(output.data, 1)
             c = (predicted == labels).squeeze()
             for i in range(n):
                 total_correct += c[i].item()
@@ -383,10 +383,6 @@ def train_model_ac_load_save(model: nn.Module, train_loader: torch.utils.data.Da
     torch.save(model.state_dict(), save_states)
 
     return model
-
-
-
-
 
 
 # import torch.nn as nn
