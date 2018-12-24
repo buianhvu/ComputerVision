@@ -10,6 +10,7 @@ def test_data(model: nn.Module, test_loader: DataLoader, classes, device=None, w
     if device is None:
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model.to(device)
+    model.eval()
     total_correct = 0.
     total = 0.
     class_correct = list(0. for i in range(num_classes))
