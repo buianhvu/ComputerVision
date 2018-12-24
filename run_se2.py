@@ -9,7 +9,7 @@ if __name__ == '__main__':
     num_classes = 11
     input_folder = "/content/drive/My Drive/Food-11"
     output_folder = "/content/drive/My Drive/output/" + model_name
-    batch_size = 50
+    batch_size = 45
     epoch_num = 30
 
     net = res_se_101(num_classes=num_classes)
