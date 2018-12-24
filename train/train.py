@@ -315,6 +315,7 @@ def train_model_ac_load_save(model: nn.Module, train_loader: torch.utils.data.Da
     if device is None:
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model.to(device)
+    model.train()
     criterion = nn.CrossEntropyLoss()
 
     # setup optimizer
