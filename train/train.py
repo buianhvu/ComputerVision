@@ -263,7 +263,8 @@ def clear_path(model_name: str, path_state: str=PATH_STATE, path_log: str=PATH_L
     save_acc = os.path.join(path_log, file_accuracy)
 
     # delete bin file:
-    os.remove(save_states)
+    if model_exist(model_name, path_state):
+        os.remove(save_states)
     # open to append to file
     f = open(save_loss, "w")
     f1 = open(save_loss_summary, "w")
