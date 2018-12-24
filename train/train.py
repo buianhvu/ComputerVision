@@ -140,6 +140,7 @@ def calculate_accuracy(model: nn.Module, data_loader: torch.utils.data.DataLoade
     if device is None:
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model.to(device)
+    model.eval()
     total_correct = 0.
     total = 0.
     with torch.no_grad():
