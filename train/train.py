@@ -305,10 +305,10 @@ def train_model_ac_load_save(model: nn.Module, train_loader: torch.utils.data.Da
     save_loss_summary = os.path.join(path_log, file_summary)
     save_acc = os.path.join(path_log, file_accuracy)
 
-    # open to append to file
-    f = open(save_loss, "a")
-    f1 = open(save_loss_summary, "a")
-    f2 = open(save_acc, "a")
+    # open to append to file -> remove to save every epoch
+    # f = open(save_loss, "a")
+    # f1 = open(save_loss_summary, "a")
+    # f2 = open(save_acc, "a")
 
     if device is None:
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -324,6 +324,7 @@ def train_model_ac_load_save(model: nn.Module, train_loader: torch.utils.data.Da
     # run on epoch
     epoch = 0
     while epoch < epoch_num:
+
         if model_exist(model_name, path_state):
             model, optimizer, epoch = load_training_model(model, optimizer,
                                                           model_name=model_name, device=device,
@@ -331,7 +332,10 @@ def train_model_ac_load_save(model: nn.Module, train_loader: torch.utils.data.Da
             epoch += 1
             if epoch >= epoch_num:
                 break
-
+        # open to append file
+        f = open(save_loss, "a")
+        f1 = open(save_loss_summary, "a")
+        f2 = open(save_acc, "a")
         running_loss = 0.0
         running_check = 0.0
         for i, data in enumerate(train_loader):
@@ -366,13 +370,15 @@ def train_model_ac_load_save(model: nn.Module, train_loader: torch.utils.data.Da
         acc = calculate_accuracy(model, train_loader, device=device)
         f2.write("epoch %2d: %f\n"%(epoch, acc))
         print("epoch %2d: %f"%(epoch, acc))
+        #  close file
+        f.close()
+        f1.close()
+        f2.close()
 
     #  Finally saved
     print("Finished training")
     torch.save(model.state_dict(), save_states)
-    f.close()
-    f1.close()
-    f2.close()
+
     return model
 
 

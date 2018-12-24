@@ -48,6 +48,7 @@ class BottleNeck(nn.Module):
         self.conv1 = conv1x1(in_planes, planes)
         self.bn1 = nn.BatchNorm2d(planes)
         self.relu = nn.ReLU(inplace=True)
+        self.dropout = nn.Dropout(0.2)
         self.conv2 = conv3x3(planes, planes, stride=stride)
         self.bn2 = nn.BatchNorm2d(planes)
         self.conv3 = conv1x1(planes, planes * self.expansion)
@@ -60,14 +61,15 @@ class BottleNeck(nn.Module):
         out = self.conv1(x)
         out = self.bn1(out)
         out = self.relu(out)
+        out = self.dropout(out)
 
         out = self.conv2(out)
         out = self.bn2(out)
         out = self.relu(out)
+        out = self.dropout(out)
 
         out = self.conv3(out)
         out = self.bn3(out)
-
         if self.down_sample is not None:
             residual = self.down_sample(x)
 
