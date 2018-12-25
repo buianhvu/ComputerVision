@@ -110,7 +110,7 @@ def load_eval_model(model: nn.Module, model_name="model", path=PATH_STATE, devic
     save_file = os.path.join(path, model_name)
     if device is None:
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    model.load_state_dict(torch.load(save_file, map_location=device))
+    model.load_state_dict(torch.load(save_file))
     model.to(device)
     model.eval()
     return model
