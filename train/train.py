@@ -126,6 +126,7 @@ def load_training_model(model: nn.Module, optimizer: optim.Optimizer, model_name
     optimizer.load_state_dict(checkpoint[DEFAULT_STATE_DICT_OPT])
     epoch = checkpoint['epoch']
     model.to(device)
+    optimizer.zero_grad()
     model.train()
     return model, optimizer, epoch
     pass
@@ -335,6 +336,7 @@ def train_model_ac_load_save(model: nn.Module, train_loader: torch.utils.data.Da
             epoch += 1
             if epoch >= epoch_num:
                 break
+        model.train()
         # open to append file
         f = open(save_loss, "a")
         f1 = open(save_loss_summary, "a")

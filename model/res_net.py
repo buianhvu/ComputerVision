@@ -80,8 +80,9 @@ class BottleNeck(nn.Module):
 
 
 class ResNet(nn.Module):
-    def __init__(self, block, layers, num_classes=10):
+    def __init__(self, block, layers, num_classes=10, zero_init_residual=False):
         super(ResNet, self).__init__()
+        self.zero_init_residual = zero_init_residual
         self.in_planes = 64
         self.conv1 = nn.Conv2d(3, self.in_planes, 7, stride=2, padding=3, bias=False)
         self.bn1 = nn.BatchNorm2d(64)
@@ -118,6 +119,12 @@ class ResNet(nn.Module):
             # elif isinstance(m, nn.Linear):
             #     nn.init.normal_(m.weight, 0, 0.01)
             #     nn.init.constant_(m.bias, 0)
+        if self.zero_init_residual:
+            for m in self.modules():
+                if isinstance(m, BottleNeck):
+                    nn.init.constant_(m.bn3.weight, 0)
+                elif isinstance(m, BasicBlock):
+                    nn.init.constant_(m.bn2.weight, 0)
 
     def forward(self, x):
         x = self.conv1(x)
