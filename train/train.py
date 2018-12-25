@@ -380,7 +380,7 @@ def train_model_ac_load_save(model: nn.Module, train_loader: torch.utils.data.Da
 
     #  Finally saved
     print("Finished training")
-    torch.save(model.state_dict(), save_states)
+    # torch.save(model.state_dict(), save_states)
 
     return model
 
