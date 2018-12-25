@@ -32,15 +32,15 @@ class ResBottleSeBlock(nn.Module):
     def __init__(self, in_planes, planes, stride = 1, down_sample=None, r =4):
         super(ResBottleSeBlock, self).__init__()
         self.conv1 = conv1x1(in_planes, planes)
-        self.bn1 = nn.BatchNorm2d(planes)
+        self.bn1 = nn.BatchNorm2d(planes, track_running_stats=False)
         self.relu = nn.ReLU(inplace=True)
         self.dropout = nn.Dropout(p=0.2)
 
         self.conv2 = conv3x3(planes, planes, stride=stride)
-        self.bn2 = nn.BatchNorm2d(planes)
+        self.bn2 = nn.BatchNorm2d(planes, track_running_stats=False)
 
         self.conv3 = conv1x1(planes, planes * self.expansion)
-        self.bn3 = nn.BatchNorm2d(planes * self.expansion)
+        self.bn3 = nn.BatchNorm2d(planes * self.expansion, track_running_stats=False)
 
         self.stride = stride
         self.down_sample = down_sample
@@ -115,7 +115,7 @@ class SENet(nn.Module):
             conv = nn.Conv2d(self.in_planes, planes, kernel_size, padding=padding, stride=stride)
             self.in_planes = planes
             block = SEBlock(self.in_planes)
-            bn = nn.BatchNorm2d(planes)
+            bn = nn.BatchNorm2d(planes, track_running_stats=False)
             relu = nn.ReLU(inplace=True)
             layers.append(conv)
             layers.append(block)

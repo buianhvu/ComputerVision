@@ -113,10 +113,6 @@ def load_eval_model(model: nn.Module, model_name="model", path=PATH_STATE, devic
     model.load_state_dict(torch.load(save_file, map_location=device))
     model.to(device)
     model.eval()
-    for child in model.children():
-        for ii in range(len(child)):
-            if type(child[ii]) == nn.BatchNorm2d:
-                child[ii].track_running_stats = False
     return model
 
 
@@ -146,10 +142,6 @@ def calculate_accuracy(model: nn.Module, data_loader: torch.utils.data.DataLoade
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model.to(device)
     model.eval()
-    for child in model.children():
-        for ii in range(len(child)):
-            if type(child[ii]) == nn.BatchNorm2d:
-                child[ii].track_running_stats = False
     total_correct = 0.
     total = 0.
     with torch.no_grad():
