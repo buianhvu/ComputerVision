@@ -7,7 +7,7 @@ D = [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 'M', 512, 512, 512, 'M', 512, 51
 class VGG(nn.Module):
     def __init__(self, layers, num_classes=10, init_weight=True, default_last_size=(4, 4)):
         super(VGG, self).__init__()
-        if default_last_size is not tuple:
+        if type(default_last_size) is not tuple:
             default_last_size = default_last_size**2
         else:
             default_last_size = default_last_size[0] * default_last_size[1]
