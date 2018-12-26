@@ -5,14 +5,14 @@ from commons.cv_input import *
 
 
 if __name__ == '__main__':
-    model_name = "res_food"
+    model_name = "vgg_food"
     num_classes = 11
     input_folder = "/content/drive/My Drive/Food-11"
     output_folder = "/content/drive/My Drive/output/" + model_name
     batch_size = 50
     epoch_num = 50
 
-    net = set_vgg16(num_classes=11, defaul_last_size=(7, 7))
+    net = set_vgg16(num_classes=11, default_last_size=(7, 7))
 
     _, train_loader = get_loader(root=input_folder, batch_size=batch_size)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
