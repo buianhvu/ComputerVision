@@ -173,7 +173,7 @@ def res_se_50(num_classes=10):
 
 
 def res_se_34(num_classes=10):
-    model = ResNet(ResBasicSeBlock, [3, 2, 3, 3], num_classes=num_classes)
+    model = ResNet(ResBasicSeBlock, [3, 2, 6, 3], num_classes=num_classes)
     return model
 
 
