@@ -177,6 +177,10 @@ def res_se_34(num_classes=10):
     return model
 
 
+def res_se_18(num_classes=10):
+    model = ResNet(ResBasicSeBlock, [3, 2, 2, 2], num_classes=num_classes)
+    return model
+
 # from model.res_net import *
 # import torch.nn.functional as F
 #
@@ -262,3 +266,4 @@ def res_se_34(num_classes=10):
 #
 #
 #
+
