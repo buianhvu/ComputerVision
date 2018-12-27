@@ -1,4 +1,4 @@
-from train.train import train_model, OPT
+from train.train import *
 from test.test import *
 from commons.cv_input import *
 from parser.parser import *
@@ -26,9 +26,9 @@ def training_testing(net_func):
 
     if opt_func == 'adam':
         momentum = None
-    net = train_model(net, train_loader, model_name=model_name, path_state=output_dir,
-                      path_log=path_log, learning_rate=learning_rate, momentum=momentum,
-                      optimize_func=OPT[opt_func], epoch_num=epoch, device=device)
+    net = train_model_ac_load_save(net, train_loader, model_name=model_name, path_state=output_dir,
+                                   path_log=path_log, learning_rate=learning_rate, momentum=momentum,
+                                   optimize_func=OPT[opt_func], epoch_num=epoch, device=device)
 
     _, test_loader = get_loader(root=input_dir, inside="evaluation", batch_size=batch_size)
     classes = tuple(range(num_class))

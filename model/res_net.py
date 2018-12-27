@@ -148,3 +148,7 @@ def res_net101(**kwargs):
     model = ResNet(BottleNeck, [3, 4, 23, 3], **kwargs)
     return model
 
+
+def res_net50(**kwargs):
+    model = ResNet(BottleNeck, [3, 4, 6, 3], **kwargs)
+    return model
