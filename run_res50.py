@@ -5,7 +5,7 @@ from commons.cv_input import *
 
 
 if __name__ == '__main__':
-    model_name = "res_food"
+    model_name = "res50_food"
     num_classes = 11
     input_folder = "/content/drive/My Drive/Food-11"
     output_folder = "/content/drive/My Drive/output/" + model_name
