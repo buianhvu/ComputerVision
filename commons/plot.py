@@ -44,7 +44,7 @@ OUTPUT_RES_SE_101_VGG = "[IMG]Res101- Se101 - vgg"
 OUTPUT_RES_SE_50_VGG = "[IMG]se50 - res50 - vgg"
 OUTPUT_RES_SE_101_NODROPOUT = "[IMG]res101 - se 101 - nodropout"
 OUTPUT_ALL = "[IMG]All AVG LOSS OVER ITER"
-
+colors = ['red', 'gold', 'blue', 'pink', 'olive', 'brown', 'orchid', 'skyblue', 'crimson']
 class Plot_G():
 	def __init__(self):
 		pass
@@ -117,15 +117,15 @@ class Plot_G():
 		plt.savefig(OUTPUT_RES_SE_101_NODROPOUT)
 		plt.close()
 		#all avg_loss of all models
-		plt.plot(X1, Z1, label = 'RES_101_DROPOUT')
-		plt.plot(X2, Z2, label = 'RES_101_NO_DROPOUT')
-		plt.plot(X3, Z3, label = 'RES_50')
-		plt.plot(X4, Z4, label = 'VGG_16')
-		plt.plot(X5, Z5, label = 'SE_101_DROPOUT')
-		plt.plot(X6, Z6, label = 'SE_101_NO_DROPOUT')
-		plt.plot(X7, Z7, label = 'SE_34')
-		plt.plot(X8, Z8, label = 'SE_50')
-		plt.plot(X9, Z9, label = 'SE_18')
+		plt.plot(X1, Z1, label = 'RES_101_DROPOUT', color = colors[0])
+		plt.plot(X2, Z2, label = 'RES_101_NO_DROPOUT', color = colors[1])
+		plt.plot(X3, Z3, label = 'RES_50', color = colors[2])
+		plt.plot(X4, Z4, label = 'VGG_16', color = colors[3])
+		plt.plot(X5, Z5, label = 'SE_101_DROPOUT', color = colors[4])
+		plt.plot(X6, Z6, label = 'SE_101_NO_DROPOUT', color = colors[5])
+		plt.plot(X7, Z7, label = 'SE_34', color = colors[6])
+		plt.plot(X8, Z8, label = 'SE_50', color = colors[7])
+		plt.plot(X9, Z9, label = 'SE_18', color = colors[8])
 		plt.legend()
 		plt.xlabel('Batch number')
 		plt.ylabel('Loss')
@@ -149,7 +149,7 @@ class Plot_G():
 		 "SE_34", "SE_50", "SE_18"]
 		avg_acc = [Z1, Z1, Z3, Z4, Z5, Z6, Z7, Z8, Z9]
 		classes_name = ["C0", "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10"]
-		plt.barh(model_names, avg_acc, alpha = 1)
+		plt.barh(model_names, avg_acc, alpha = 1, color = colors)
 		plt.title('Average Accuracy Of Models')
 		plt.xlabel('Models')
 		plt.ylabel('Avg Accuracy')
@@ -158,22 +158,22 @@ class Plot_G():
 		plt.close()
 
 		#draw test for classes in each model
-		self.draw_test_for_1_model(classes_name, Y1, title = 'RES_101_DROPOUT TEST RESULT')
-		self.draw_test_for_1_model(classes_name, Y2, title = 'RES_101_NO_DROPOUT TEST RESULT')
-		self.draw_test_for_1_model(classes_name, Y3, title = 'RES_50 TEST RESULT')
-		self.draw_test_for_1_model(classes_name, Y4, title = 'VGG_16 TEST RESULT')
-		self.draw_test_for_1_model(classes_name, Y5, title = 'SE_101_DROPOUT TEST RESULT')
-		self.draw_test_for_1_model(classes_name, Y6, title = 'SE_101_NO_DROPOUT TEST RESULT')
-		self.draw_test_for_1_model(classes_name, Y7, title = 'SE_34 TEST RESULT')
-		self.draw_test_for_1_model(classes_name, Y8, title = 'SE_50 TEST RESULT')
-		self.draw_test_for_1_model(classes_name, Y9, title = 'SE_18 TEST RESULT')		
+		self.draw_test_for_1_model(classes_name, Y1, title = 'RES_101_DROPOUT TEST RESULT', color = colors[0])
+		self.draw_test_for_1_model(classes_name, Y2, title = 'RES_101_NO_DROPOUT TEST RESULT', color = colors[1])
+		self.draw_test_for_1_model(classes_name, Y3, title = 'RES_50 TEST RESULT', color = colors[2])
+		self.draw_test_for_1_model(classes_name, Y4, title = 'VGG_16 TEST RESULT', color = colors[3])
+		self.draw_test_for_1_model(classes_name, Y5, title = 'SE_101_DROPOUT TEST RESULT', color = colors[4])
+		self.draw_test_for_1_model(classes_name, Y6, title = 'SE_101_NO_DROPOUT TEST RESULT', color = colors[5])
+		self.draw_test_for_1_model(classes_name, Y7, title = 'SE_34 TEST RESULT', color = colors[6])
+		self.draw_test_for_1_model(classes_name, Y8, title = 'SE_50 TEST RESULT', color = colors[7])
+		self.draw_test_for_1_model(classes_name, Y9, title = 'SE_18 TEST RESULT', color=colors[8])		
 		pass
 
 
-	def draw_test_for_1_model(self, classes, acc_list, title): #draw test for classes in 1 model
+	def draw_test_for_1_model(self, classes, acc_list, title, color): #draw test for classes in 1 model
 		# print ("X: {} lenght: {}".format(classes, len(classes)))
 		# print ("Y: {} lenght: {}".format(acc_list, len(acc_list)))
-		plt.bar(classes, acc_list, alpha = 1)
+		plt.bar(classes, acc_list, alpha = 1, color = color)
 		plt.title(title)
 		plt.xlabel('Classes')
 		plt.ylabel('Accuracy')
