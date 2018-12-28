@@ -148,6 +148,7 @@ class Plot_G():
 		model_names = ["RE101_DO", "RE101_NO_DO", "RES_50", "VGG_16", "SE101_DO", "SE101_NO_DO",
 		 "SE_34", "SE_50", "SE_18"]
 		avg_acc = [Z1, Z1, Z3, Z4, Z5, Z6, Z7, Z8, Z9]
+		classes_name = ["C0", "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10"]
 		plt.barh(model_names, avg_acc, alpha = 1)
 		plt.title('Average Accuracy Of Models')
 		plt.xlabel('Models')
@@ -157,15 +158,15 @@ class Plot_G():
 		plt.close()
 
 		#draw test for classes in each model
-		self.draw_test_for_1_model(X1, Y1, title = 'RES_101_DROPOUT TEST RESULT')
-		self.draw_test_for_1_model(X2, Y2, title = 'RES_101_NO_DROPOUT TEST RESULT')
-		self.draw_test_for_1_model(X3, Y3, title = 'RES_50 TEST RESULT')
-		self.draw_test_for_1_model(X4, Y4, title = 'VGG_16 TEST RESULT')
-		self.draw_test_for_1_model(X5, Y5, title = 'SE_101_DROPOUT TEST RESULT')
-		self.draw_test_for_1_model(X6, Y6, title = 'SE_101_NO_DROPOUT TEST RESULT')
-		self.draw_test_for_1_model(X7, Y7, title = 'SE_34 TEST RESULT')
-		self.draw_test_for_1_model(X8, Y8, title = 'SE_50 TEST RESULT')
-		self.draw_test_for_1_model(X9, Y9, title = 'SE_18 TEST RESULT')		
+		self.draw_test_for_1_model(classes_name, Y1, title = 'RES_101_DROPOUT TEST RESULT')
+		self.draw_test_for_1_model(classes_name, Y2, title = 'RES_101_NO_DROPOUT TEST RESULT')
+		self.draw_test_for_1_model(classes_name, Y3, title = 'RES_50 TEST RESULT')
+		self.draw_test_for_1_model(classes_name, Y4, title = 'VGG_16 TEST RESULT')
+		self.draw_test_for_1_model(classes_name, Y5, title = 'SE_101_DROPOUT TEST RESULT')
+		self.draw_test_for_1_model(classes_name, Y6, title = 'SE_101_NO_DROPOUT TEST RESULT')
+		self.draw_test_for_1_model(classes_name, Y7, title = 'SE_34 TEST RESULT')
+		self.draw_test_for_1_model(classes_name, Y8, title = 'SE_50 TEST RESULT')
+		self.draw_test_for_1_model(classes_name, Y9, title = 'SE_18 TEST RESULT')		
 		pass
 
 
