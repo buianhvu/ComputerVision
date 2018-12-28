@@ -149,7 +149,7 @@ class Plot_G():
 		model_names = ["RE101_DO", "RE101_NO_DO", "RES_50", "VGG_16", "SE101_DO", "SE101_NO_DO",
 		 "SE_34", "SE_50", "SE_18"]
 		avg_acc = [Z1, Z1, Z3, Z4, Z5, Z6, Z7, Z8, Z9]
-		classes_name = ["C0", "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10"]
+		classes_name = ["Bread", "Dairy", "Dessert", "Egg", "Fried", "Meat", "Noodles", "Rice", "SeaFood", "Soup", "Fruit"]
 		plt.barh(model_names, avg_acc, alpha = 1, color = colors)
 		plt.title('Average Accuracy Of Models')
 		plt.xlabel('Models')
@@ -177,6 +177,7 @@ class Plot_G():
 		plt.bar(classes, acc_list, alpha = 1, color = color)
 		plt.title(title)
 		plt.xlabel('Classes')
+		plt.xticks(rotation = 70, fontsize=7)
 		plt.ylabel('Accuracy')
 		plt.savefig("[IMG]"+title)
 		plt.close()
