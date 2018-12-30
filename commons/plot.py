@@ -43,6 +43,8 @@ OUTPUT_AVG_ACC = "[IMG]Average Accuracy For Models"
 OUTPUT_RES_SE_101_VGG = "[IMG]Res101- Se101 - vgg"
 OUTPUT_RES_SE_50_VGG = "[IMG]se50 - res50 - vgg"
 OUTPUT_RES_SE_101_NODROPOUT = "[IMG]res101 - se 101 - nodropout"
+OUTPUT_RES101DR_RES101NO = "[IMG]res101 dropout - res101 nodropout"
+OUTPUT_SE101DR_SE101NO = "[IMG]se101 dropout - se101 nodropout"
 OUTPUT_ALL = "[IMG]All AVG LOSS OVER ITER"
 # colors = ['red', 'gold', 'blue', 'pink', 'olive', 'brown', 'orchid', 'skyblue', 'crimson']
 colors = ['sienna', 'steelblue', 'seagreen', 'khaki', 'darkolivegreen', 'brown', 'slategrey', 'skyblue', 'crimson']
@@ -116,6 +118,24 @@ class Plot_G():
 		plt.ylabel('Loss')
 		plt.title('Loss Over Iteration Graph')
 		plt.savefig(OUTPUT_RES_SE_101_NODROPOUT)
+		plt.close()
+		#res101 dropout - res101 no dropout
+		plt.plot(X2, Z2, label = 'RES_101_NO_DROPOUT')
+		plt.plot(X1, Z1, label = 'RES_101_DROPOUT')
+		plt.legend()
+		plt.xlabel('Iterations')
+		plt.ylabel('Loss')
+		plt.title('Loss Over Iteration Graph')
+		plt.savefig(OUTPUT_RES101DR_RES101NO)
+		plt.close()
+		#res101 dropout - res101 no dropout
+		plt.plot(X5, Z5, label = 'SE_101_DROPOUT')
+		plt.plot(X6, Z6, label = 'SE_101_NO_DROPOUT')
+		plt.legend()
+		plt.xlabel('Iterations')
+		plt.ylabel('Loss')
+		plt.title('Loss Over Iteration Graph')
+		plt.savefig(OUTPUT_SE101DR_SE101NO)
 		plt.close()
 		#all avg_loss of all models
 		plt.plot(X1, Z1, label = 'RES_101_DROPOUT', color = colors[0])
