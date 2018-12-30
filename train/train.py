@@ -110,7 +110,7 @@ def load_eval_model(model: nn.Module, model_name="model", path=PATH_STATE, devic
     save_file = os.path.join(path, model_name)
     if device is None:
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    model.load_state_dict(torch.load(save_file, map_location=device))
+    model.load_state_dict(torch.load(save_file))
     model.to(device)
     model.eval()
     return model
@@ -119,14 +119,16 @@ def load_eval_model(model: nn.Module, model_name="model", path=PATH_STATE, devic
 def load_training_model(model: nn.Module, optimizer: optim.Optimizer, model_name="model", path_state=PATH_STATE, device=None):
     if device is None:
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    checkpoint = torch.load(path_state)
+    state_file = model_name + STATE_EXT
+    state_file = os.path.join(path_state, state_file)
+    checkpoint = torch.load(state_file)
     model.load_state_dict(checkpoint[DEFAULT_STATE_DICT_MODEL])
     optimizer.load_state_dict(checkpoint[DEFAULT_STATE_DICT_OPT])
     epoch = checkpoint['epoch']
-    loss = checkpoint['loss']
     model.to(device)
+    optimizer.zero_grad()
     model.train()
-    return model, optimizer, epoch, loss
+    return model, optimizer, epoch
     pass
 
 
@@ -139,6 +141,7 @@ def calculate_accuracy(model: nn.Module, data_loader: torch.utils.data.DataLoade
     if device is None:
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model.to(device)
+    model.eval()
     total_correct = 0.
     total = 0.
     with torch.no_grad():
@@ -147,7 +150,7 @@ def calculate_accuracy(model: nn.Module, data_loader: torch.utils.data.DataLoade
             images, labels = images.to(device), labels.to(device)
             n = len(images)
             output = model(images)
-            _, predicted = torch.max(output, 1)
+            _, predicted = torch.max(output.data, 1)
             c = (predicted == labels).squeeze()
             for i in range(n):
                 total_correct += c[i].item()
@@ -262,7 +265,8 @@ def clear_path(model_name: str, path_state: str=PATH_STATE, path_log: str=PATH_L
     save_acc = os.path.join(path_log, file_accuracy)
 
     # delete bin file:
-    os.remove(save_states)
+    if model_exist(model_name, path_state):
+        os.remove(save_states)
     # open to append to file
     f = open(save_loss, "w")
     f1 = open(save_loss_summary, "w")
@@ -273,9 +277,9 @@ def clear_path(model_name: str, path_state: str=PATH_STATE, path_log: str=PATH_L
 
 
 def train_model_ac_load_save(model: nn.Module, train_loader: torch.utils.data.DataLoader,
-                model_name=default_name, path_state=PATH_STATE,  path_log=PATH_LOG,
-                learning_rate=default_learning_rate, momentum=default_momentum, optimize_func = optim.SGD,
-                epoch_num=2, device=None, default_check=100):
+                             model_name=default_name, path_state=PATH_STATE,  path_log=PATH_LOG,
+                             learning_rate=default_learning_rate, momentum=default_momentum, optimize_func = optim.SGD,
+                             epoch_num=2, device=None, default_check=100):
     """
     :param model: nn.Module
     :param train_loader: train data set in DataLoader
@@ -304,14 +308,15 @@ def train_model_ac_load_save(model: nn.Module, train_loader: torch.utils.data.Da
     save_loss_summary = os.path.join(path_log, file_summary)
     save_acc = os.path.join(path_log, file_accuracy)
 
-    # open to append to file
-    f = open(save_loss, "a")
-    f1 = open(save_loss_summary, "a")
-    f2 = open(save_acc, "a")
+    # open to append to file -> remove to save every epoch
+    # f = open(save_loss, "a")
+    # f1 = open(save_loss_summary, "a")
+    # f2 = open(save_acc, "a")
 
     if device is None:
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model.to(device)
+    model.train()
     criterion = nn.CrossEntropyLoss()
 
     # setup optimizer
@@ -323,11 +328,19 @@ def train_model_ac_load_save(model: nn.Module, train_loader: torch.utils.data.Da
     # run on epoch
     epoch = 0
     while epoch < epoch_num:
+
         if model_exist(model_name, path_state):
-            model, optimizer, epoch, loss = load_training_model(model, optimizer, model_name=model_name, device=device)
+            model, optimizer, epoch = load_training_model(model, optimizer,
+                                                          model_name=model_name, device=device,
+                                                          path_state=path_state)
             epoch += 1
             if epoch >= epoch_num:
                 break
+        model.train()
+        # open to append file
+        f = open(save_loss, "a")
+        f1 = open(save_loss_summary, "a")
+        f2 = open(save_acc, "a")
         running_loss = 0.0
         running_check = 0.0
         for i, data in enumerate(train_loader):
@@ -355,25 +368,23 @@ def train_model_ac_load_save(model: nn.Module, train_loader: torch.utils.data.Da
 
         # save to file
         torch.save({
-            EPOCH_STR: epoch_num,
+            EPOCH_STR: epoch,
             DEFAULT_STATE_DICT_MODEL: model.state_dict(),
             DEFAULT_STATE_DICT_OPT: optimizer.state_dict(),
         }, save_states)
         acc = calculate_accuracy(model, train_loader, device=device)
         f2.write("epoch %2d: %f\n"%(epoch, acc))
         print("epoch %2d: %f"%(epoch, acc))
+        #  close file
+        f.close()
+        f1.close()
+        f2.close()
 
     #  Finally saved
     print("Finished training")
-    torch.save(model.state_dict(), save_states)
-    f.close()
-    f1.close()
-    f2.close()
+    # torch.save(model.state_dict(), save_states)
+
     return model
-
-
-
-
 
 
 # import torch.nn as nn

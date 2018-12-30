@@ -5,11 +5,12 @@ import torch
 from test import test_log
 
 
-def test_data(model: nn.Module, test_loader: DataLoader, classes, device=None, write_log=True):
+def test_data(model: nn.Module, test_loader: DataLoader, classes, device=None, write_log=True, file_log="test.log"):
     num_classes = len(classes)
     if device is None:
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model.to(device)
+    model.eval()
     total_correct = 0.
     total = 0.
     class_correct = list(0. for i in range(num_classes))
@@ -20,7 +21,7 @@ def test_data(model: nn.Module, test_loader: DataLoader, classes, device=None, w
             n = len(images)
             images, labels = images.to(device), labels.to(device)
             output = model(images)
-            _, predicted = torch.max(output, 1)
+            _, predicted = torch.max(output.data, 1)
             c = (predicted == labels).squeeze()
             for i in range(n):
                 label = labels[i]
@@ -34,7 +35,7 @@ def test_data(model: nn.Module, test_loader: DataLoader, classes, device=None, w
     accuracy = total_correct/total
     print('Accuracy: %2d %%' % (accuracy*100))
     if write_log:
-        test_log.write_log(classes, class_correct, class_total, accuracy)
+        test_log.write_log(classes, class_correct, class_total, accuracy, path=file_log)
 
 
 def test_unknown(model: nn.Module, test_loader: DataLoader, device=None, write_log=True):

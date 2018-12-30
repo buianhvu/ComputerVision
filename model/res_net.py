@@ -13,13 +13,15 @@ def conv3x3(in_planes, planes, stride=1):
 
 
 class BasicBlock(nn.Module):
+    expansion = 1
+
     def __init__(self, in_planes, planes, stride=1, down_sample=None):
         super(BasicBlock, self).__init__()
         self.conv1 = conv3x3(in_planes, planes, stride=stride)
-        self.bn1 = nn.BatchNorm2d(planes)
+        self.bn1 = nn.BatchNorm2d(planes, track_running_stats=False)
         self.relu = nn.ReLU(inplace=True)
         self.conv2 = conv3x3(planes, planes, stride=1)
-        self.bn2 = nn.BatchNorm2d(planes)
+        self.bn2 = nn.BatchNorm2d(planes, track_running_stats=False)
         self.down_sample = down_sample
         self.stride = stride
 
@@ -46,12 +48,13 @@ class BottleNeck(nn.Module):
     def __init__(self, in_planes, planes, stride = 1, down_sample=None):
         super(BottleNeck, self).__init__()
         self.conv1 = conv1x1(in_planes, planes)
-        self.bn1 = nn.BatchNorm2d(planes)
+        self.bn1 = nn.BatchNorm2d(planes, track_running_stats=False)
         self.relu = nn.ReLU(inplace=True)
+        self.dropout = nn.Dropout(0.2)
         self.conv2 = conv3x3(planes, planes, stride=stride)
-        self.bn2 = nn.BatchNorm2d(planes)
+        self.bn2 = nn.BatchNorm2d(planes, track_running_stats=False)
         self.conv3 = conv1x1(planes, planes * self.expansion)
-        self.bn3 = nn.BatchNorm2d(planes * self.expansion)
+        self.bn3 = nn.BatchNorm2d(planes * self.expansion, track_running_stats=False)
         self.stride = stride
         self.down_sample = down_sample
 
@@ -60,14 +63,15 @@ class BottleNeck(nn.Module):
         out = self.conv1(x)
         out = self.bn1(out)
         out = self.relu(out)
+        out = self.dropout(out)
 
         out = self.conv2(out)
         out = self.bn2(out)
         out = self.relu(out)
+        out = self.dropout(out)
 
         out = self.conv3(out)
         out = self.bn3(out)
-
         if self.down_sample is not None:
             residual = self.down_sample(x)
 
@@ -78,11 +82,12 @@ class BottleNeck(nn.Module):
 
 
 class ResNet(nn.Module):
-    def __init__(self, block, layers, num_classes=10):
+    def __init__(self, block, layers, num_classes=10, zero_init_residual=False):
         super(ResNet, self).__init__()
+        self.zero_init_residual = zero_init_residual
         self.in_planes = 64
         self.conv1 = nn.Conv2d(3, self.in_planes, 7, stride=2, padding=3, bias=False)
-        self.bn1 = nn.BatchNorm2d(64)
+        self.bn1 = nn.BatchNorm2d(64, track_running_stats=False)
         self.relu = nn.ReLU(inplace=True)
         self.max_pool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
         self.layer1 = self.make_layer(block, 64, layers[0])
@@ -98,7 +103,7 @@ class ResNet(nn.Module):
         if stride != 1 or self.in_planes != planes * block.expansion:
             down_sample = nn.Sequential(
                 conv1x1(self.in_planes, planes * block.expansion, stride),
-                nn.BatchNorm2d(planes * block.expansion)
+                nn.BatchNorm2d(planes * block.expansion, track_running_stats=False)
             )
         layers = [block(self.in_planes, planes, stride, down_sample)]
         self.in_planes = planes * block.expansion
@@ -116,6 +121,12 @@ class ResNet(nn.Module):
             # elif isinstance(m, nn.Linear):
             #     nn.init.normal_(m.weight, 0, 0.01)
             #     nn.init.constant_(m.bias, 0)
+        if self.zero_init_residual:
+            for m in self.modules():
+                if isinstance(m, BottleNeck):
+                    nn.init.constant_(m.bn3.weight, 0)
+                elif isinstance(m, BasicBlock):
+                    nn.init.constant_(m.bn2.weight, 0)
 
     def forward(self, x):
         x = self.conv1(x)
@@ -139,3 +150,7 @@ def res_net101(**kwargs):
     model = ResNet(BottleNeck, [3, 4, 23, 3], **kwargs)
     return model
 
+
+def res_net50(**kwargs):
+    model = ResNet(BottleNeck, [3, 4, 6, 3], **kwargs)
+    return model
